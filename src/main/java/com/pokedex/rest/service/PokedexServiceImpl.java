@@ -13,12 +13,14 @@ import com.pokedex.rest.entity.wrapper.TypeWrapper;
 import com.pokedex.rest.util.rest.InvokeRestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,11 +40,8 @@ public class PokedexServiceImpl implements PokedexService {
     @Value("${api.pokemon.url}")
     private String baseURL;
 
+    @Autowired
     private InvokeRestService invoke;
-
-    public PokedexServiceImpl(InvokeRestService invoke) {
-        this.invoke = invoke;
-    }
 
     @Override
     @Cacheable("pokemonListPaginated")
@@ -161,13 +160,14 @@ public class PokedexServiceImpl implements PokedexService {
 
     @Override
     public List<String> getPokemonMoves(List<MoveWrapper> moves) {
-        return moves.stream()
+        return moves == null ? Collections.EMPTY_LIST :
+                moves.stream()
                 .map(move -> move.getMove().getName())
                 .collect(Collectors.toList());
     }
 
     @Override
     public Integer getOffsetFromPageNumber(Integer pageNumber) {
-        return pageNumber < 0 ? 0 : 20 * --pageNumber;
+        return pageNumber == null || pageNumber < 0 ? 0 : 20 * --pageNumber;
     }
 }
