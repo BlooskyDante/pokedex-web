@@ -2,6 +2,7 @@ package com.pokedex.rest.controller;
 
 import com.pokedex.rest.entity.SimplifiedPokemon;
 import com.pokedex.rest.entity.DetailedPokemonAbstraction;
+import com.pokedex.rest.entity.wrapper.PokemonPaginatedListResponse;
 import com.pokedex.rest.service.PokedexService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ public class PokedexController {
     }
 
     @GetMapping("/page/{pageNumber}")
-    public List<SimplifiedPokemon> getPokemonListPaginated(@PathVariable Integer pageNumber) {
+    public PokemonPaginatedListResponse getPokemonListPaginated(@PathVariable Integer pageNumber) {
         return service.getPokemonListPaginated(pageNumber);
     }
 

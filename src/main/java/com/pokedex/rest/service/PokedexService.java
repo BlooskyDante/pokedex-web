@@ -6,13 +6,14 @@ import com.pokedex.rest.entity.SimplifiedPokemon;
 import com.pokedex.rest.entity.wrapper.AbilityWrapper;
 import com.pokedex.rest.entity.wrapper.EvolutionWrapper;
 import com.pokedex.rest.entity.wrapper.MoveWrapper;
+import com.pokedex.rest.entity.wrapper.PokemonPaginatedListResponse;
 import com.pokedex.rest.entity.wrapper.TypeWrapper;
 
 import java.util.List;
 
 public interface PokedexService {
 
-    List<SimplifiedPokemon> getPokemonListPaginated(Integer pageNumber);
+    PokemonPaginatedListResponse getPokemonListPaginated(Integer pageNumber);
 
     Pokemon getPokemonByName(String name);
 

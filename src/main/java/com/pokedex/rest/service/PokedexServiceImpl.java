@@ -8,6 +8,7 @@ import com.pokedex.rest.entity.SimplifiedPokemon;
 import com.pokedex.rest.entity.wrapper.AbilityWrapper;
 import com.pokedex.rest.entity.wrapper.EvolutionWrapper;
 import com.pokedex.rest.entity.wrapper.MoveWrapper;
+import com.pokedex.rest.entity.wrapper.PokemonPaginatedListResponse;
 import com.pokedex.rest.entity.wrapper.TypeWrapper;
 import com.pokedex.rest.util.rest.InvokeRestService;
 import org.slf4j.Logger;
@@ -45,7 +46,8 @@ public class PokedexServiceImpl implements PokedexService {
 
     @Override
     @Cacheable("pokemonListPaginated")
-    public List<SimplifiedPokemon> getPokemonListPaginated(Integer pageNumber) {
+    public PokemonPaginatedListResponse getPokemonListPaginated(Integer pageNumber) {
+        PokemonPaginatedListResponse resp = new PokemonPaginatedListResponse();
         List<SimplifiedPokemon> pokemonList = new ArrayList<>();
         try {
             final String ENDPOINT = baseURL + POKEMON_ENDPOINT + "?limit=20&offset=" + getOffsetFromPageNumber(pageNumber);
@@ -57,13 +59,16 @@ public class PokedexServiceImpl implements PokedexService {
                         .filter(Objects::nonNull)
                         .map(this::getSimplifiedPokemon)
                         .collect(Collectors.toList());
+
+                resp.setCount(response.getCount());
+                resp.setPokemonList(pokemonList);
             } else {
                 throw new IllegalArgumentException("The response from the API was invalid and the object is null.");
             }
         } catch (Exception e) {
             LOG.error(ERROR, e);
         }
-        return pokemonList;
+        return resp;
     }
 
     @Override

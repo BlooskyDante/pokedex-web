@@ -1,6 +1,7 @@
 package com.pokedex.rest.entity;
 
 import lombok.Data;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
